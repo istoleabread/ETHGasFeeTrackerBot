@@ -3,6 +3,7 @@ from telebot.types import InlineKeyboardMarkup as ikm
 from telebot.types import InlineKeyboardButton as ikb
 from time import sleep
 from gasfees import gasfee
+from ethprice import getprice
 
 Token = "Bot_Access_Token"
 
@@ -37,6 +38,7 @@ After donating, please send a screenshot of donation you sent to @ETHGasFeeSuppo
 
 cmds = """<b><ins>All Commands:</ins></b>
 /gas - See live gas fee
+/p - Get Ethereum Live Price
 /donate - Donate to support development of this bot
 /contact - Contact my Dev regarding anything
 """
@@ -67,6 +69,11 @@ def pingme(msg):
 @bot.message_handler(commands=["cmd", "cmds"])
 def cmd(msg):
 	bot.send_message(msg.chat.id, cmds)
+
+
+@bot.message_handler(commands=["p", "price"])
+def usdbtc(msg):
+    bot.send_message(msg.chat.id, getprice(), disable_web_page_preview=True)
 
 
 
