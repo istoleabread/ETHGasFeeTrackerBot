@@ -6,5 +6,4 @@
 - requests
 
 ## APIs
-- Powered by [EtherScan](https://etherscan.io/gasTracker) API
-- Price by [Coingecko](https://coingecko.com) API
+- Powered by [EtherScan](https://etherscan.io/gasTracker) & [Coingecko](https://coingecko.com) API
