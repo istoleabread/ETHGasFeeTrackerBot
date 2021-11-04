@@ -48,7 +48,7 @@ def homie(msg):
 	bot.send_message(msg.chat.id, wlcm)
 	
 
-@bot.message_handler(commands=["gas"])
+@bot.message_handler(commands=["gas", "fee"])
 def ethgas(msg):
 	bot.send_message(msg.chat.id, gasfee(), disable_web_page_preview=True)
 
