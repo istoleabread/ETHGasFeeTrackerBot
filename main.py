@@ -23,11 +23,15 @@ wlcm = """Ciao! I'm ETH Gas Fee Tracker Bot, I can send you live Ethereum Gas Fe
 
 Send /gas to see!
 
-All Commands - /cmd
+All Commands - /cmds
 Check Bot Uptime: https://bot.advik.dev/
+
+Donate to support the development of this bot: /donate
 """
 
 donate = """I don't cost any money but I do have some running costs. My developer will be very grateful if you donate any amount of crypto to support the development of this bot!
+
+<b>Blockchain Domain:</b> <a href="https://advik.click/ud">devadvik.crypto</a>
 
 <b><ins>Addresses:</ins></b>
 
@@ -52,6 +56,8 @@ cmds = """<b><ins>All Commands:</ins></b>
 /p - Get Ethereum Live Price
 /donate - Donate to support development of this bot
 /contact - Contact my Dev regarding anything
+
+<b>Check Bot Uptime:</b> https://bot.advik.dev/
 """
 
 
@@ -64,7 +70,7 @@ def wlcmsg(msg):
             for uid in knwn:
                 uid = uid + ' '
                 uids.write(uid)
-    bot.send_message(msg.chat.id, wlcm)
+    bot.send_message(msg.chat.id, wlcm, disable_web_page_preview=True)
 	
 
 @bot.message_handler(commands=["gas"])
@@ -74,20 +80,20 @@ def ethgas(msg):
 		
 @bot.message_handler(commands=["donate"])
 def donateme(msg):
-	bot.send_message(msg.chat.id, donate)
+	bot.send_message(msg.chat.id, donate, disable_web_page_preview=True)
 
 		
 @bot.message_handler(commands=["contact"])
 def pingme(msg):
 	mrkp = ikm()
-	mrkp.add(ikb("Telegram", url="https://t.me/ETHGasFeeSupportBot"), ikb("Email", url="https://u.advik.dev/ETHBot/"))
+	mrkp.add(ikb("Telegram", url="https://t.me/ETHGasFeeSupportBot"), ikb("Email", url="https://advik.click/ETHBot/"))
 	
 	bot.send_message(msg.chat.id, "Ping me if you've any query or want some new features:", reply_markup=mrkp)
 
 		
 @bot.message_handler(commands=["cmd", "cmds"])
 def cmd(msg):
-	bot.send_message(msg.chat.id, cmds)
+	bot.send_message(msg.chat.id, cmds, disable_web_page_preview=True)
 
     
 @bot.message_handler(commands=["dev"])
@@ -128,6 +134,10 @@ def countactive(msg):
                 knwn.remove(uid)
                 sleep(0.04)
         bot.send_message(1060264505, f"No. of active users: {iopo}")
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
     else:
         bot.reply_to(msg, "Unauthorised User: You don't have access to this command!")
 
