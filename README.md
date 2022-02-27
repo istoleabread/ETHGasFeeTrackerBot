@@ -1,3 +1,5 @@
+[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/9nh9.svg)](https://betteruptime.com/?utm_source=status_badge)
+
 # ETHGasFeeTrackerBot
 [Telegram Bot](https://telegram.dog/ETHGasFeeTrackerBot) to show Live ETH Gas Fees in GWEI and to check Live Market Data of Ethereum.
 
