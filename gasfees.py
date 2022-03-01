@@ -1,24 +1,31 @@
-import requests
+import requests, os
+from ethprice import forgwei
 
-API = "EtherScan.io API Key"
-getgas = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey="
+API = os.environ['ether']
+getgas = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey="+API
+gweitoeth = 0.000000001
 
+data = requests.get(getgas).json()
+
+low = int(data["result"]["SafeGasPrice"])
+avg = int(data["result"]["ProposeGasPrice"])
+fast = int(data["result"]["FastGasPrice"])
+usdp = forgwei()
+
+class feeusd:
+    def __init__(self, usd):
+        self.usd = str(round(usd * 21000 * usdp * gweitoeth, 2))
+
+lowp = feeusd(low)
+avgp = feeusd(avg)
+fastp = feeusd(fast)
+
+gasinfo = f"""<b><ins>Ethereum Live Gas Fees:</ins></b>
+Low: <i>{low}</i> GWEI | <i>${lowp.usd}</i>
+Average: <i>{avg}</i> GWEI | <i>${avgp.usd}</i>
+High/Fast: <i>{fast}</i> GWEI | <i>${fastp.usd}</i>
+
+Powered by <a href=\"etherscan.io/gastracker\">EtherScan</a>."""
 
 def gasfee():
-	data = requests.get(getgas + API).json()
-	
-	low = data["result"]["SafeGasPrice"]
-	avg = data["result"]["ProposeGasPrice"]
-	fast = data["result"]["FastGasPrice"]
-	
-	gasinfo = f"""<b><ins>Ethereum Live Gas Fees:</ins></b>
-Low: <i>{low} GWEI</i>
-Average: <i>{avg} GWEI</i>
-High/Fast: <i>{fast} GWEI</i>
-	
-More info: <a href="https://etherscan.io/gasTracker">EtherScan</a>
-	
-Donate to support the development of this bot: /donate
-	"""
-	
-	return gasinfo
+    return gasinfo
