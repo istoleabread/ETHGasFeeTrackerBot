@@ -22,16 +22,14 @@ knwn = knwn.split()
 wlcm = """Ciao! I'm ETH Gas Fee Tracker Bot, I can send you live Ethereum Gas Fees in GWEI.
 
 Send /gas to see!
-
 All Commands - /cmds
-Check Bot Uptime: https://bot.advik.dev/
 
 Donate to support the development of this bot: /donate
 """
 
 donate = """I don't cost any money but I do have some running costs. My developer will be very grateful if you donate any amount of crypto to support the development of this bot!
 
-<b>Blockchain Domain:</b> <a href="https://advik.click/ud">devadvik.crypto</a>
+<b>Blockchain Domain:</b> <a href="https://advik.click/ud">devadvik.x</a>
 
 <b><ins>Addresses:</ins></b>
 
@@ -57,20 +55,22 @@ cmds = """<b><ins>All Commands:</ins></b>
 /donate - Donate to support development of this bot
 /contact - Contact my Dev regarding anything
 
-<b>Check Bot Uptime:</b> https://bot.advik.dev/
+<b>Check Bot Uptime:</b> https://tgbots.advik.dev/
 """
 
 
 @bot.message_handler(commands=["start", "home"])
 def wlcmsg(msg):
     chatid = str(msg.chat.id)
+    mrkp = ikm()
+    mrkp.add(ikb("Join Channel For Updates", url="https://t.me/DevUpdate"))
     if chatid not in knwn:
         knwn.append(chatid)
         with open('userids.txt', 'w') as uids:
             for uid in knwn:
                 uid = uid + ' '
                 uids.write(uid)
-    bot.send_message(msg.chat.id, wlcm, disable_web_page_preview=True)
+    bot.send_message(msg.chat.id, wlcm, reply_markup=mrkp, disable_web_page_preview=True)
 	
 
 @bot.message_handler(commands=["gas"])
@@ -87,7 +87,7 @@ def donateme(msg):
 def pingme(msg):
 	mrkp = ikm()
 	mrkp.add(ikb("Telegram", url="https://t.me/ETHGasFeeSupportBot"), ikb("Email", url="https://advik.click/ETHBot/"))
-	
+	mrkp.add(ikb("Join Channel For Updates", url="https://t.me/DevUpdate"))
 	bot.send_message(msg.chat.id, "Ping me if you've any query or want some new features:", reply_markup=mrkp)
 
 		
@@ -98,7 +98,7 @@ def cmd(msg):
     
 @bot.message_handler(commands=["dev"])
 def iownit(msg):
-    bot.reply_to(msg, "Made by @advik_143")
+    bot.reply_to(msg, "Made by @DevAdvik")
 
 
 @bot.message_handler(commands=["p"])
@@ -121,7 +121,7 @@ def getuid(msg):
 
 @bot.message_handler(commands=["active"])
 def countactive(msg):
-    actv=0 
+    actv=0
     if msg.chat.id == 1060264505:
         for uid in knwn:
             try:
@@ -142,10 +142,9 @@ def countactive(msg):
         bot.reply_to(msg, "Unauthorised User: You don't have access to this command!")
 
 
-
 while True:
 	try:
-		bot.polling(0.04)
+		bot.infinity_polling(skip_pending=True)
 		telebot.apihelper.SESSION_TIME_TO_LIVE = 2000
 	except:
 		sleep(1)
