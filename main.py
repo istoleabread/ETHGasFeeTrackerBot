@@ -2,7 +2,7 @@ import telebot, os
 from telebot.types import InlineKeyboardMarkup as ikm
 from telebot.types import InlineKeyboardButton as ikb
 from time import sleep
-from gasfees import gasfee, uniswap
+from gasfees import gasfee, uniswap, erc20
 from alive import keep_alive
 from ethprice import getprice
 
@@ -61,11 +61,36 @@ def wlcmsg(msg):
 
 @bot.message_handler(commands=["gas"])
 def ethgas(msg):
-	bot.send_message(msg.chat.id, gasfee(), disable_web_page_preview=True)
+    bot.send_message(msg.chat.id, gasfee(), disable_web_page_preview=True)
+    chatid = str(msg.chat.id)
+    if chatid not in knwn:
+        knwn.append(chatid)
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
 
 @bot.message_handler(commands=['uni', 'uniswap'])
 def unigas(msg):
     bot.send_message(msg.chat.id, uniswap(), disable_web_page_preview=True)
+    chatid = str(msg.chat.id)
+    if chatid not in knwn:
+        knwn.append(chatid)
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
+
+@bot.message_handler(commands=['erc', 'erc20'])
+def ercfees(msg):
+    bot.send_message(msg.chat.id, erc20(), disable_web_page_preview=True)
+    chatid = str(msg.chat.id)
+    if chatid not in knwn:
+        knwn.append(chatid)
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
 		
 @bot.message_handler(commands=["donate"])
 def donateme(msg):
