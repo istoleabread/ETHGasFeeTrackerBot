@@ -27,7 +27,7 @@ Low: <i>{low}</i> GWEI | ${lowp.usd}
 Average: <i>{avg}</i> GWEI | ${avgp.usd}
 High/Fast: <i>{fast}</i> GWEI | ${fastp.usd}
     
-Powered by <a href=\"https://etherscan.io/gastracker\">EtherScan</a>"""
+Powered by <a href=\"https://etherscan.io\">EtherScan</a>"""
     
     return gasinfo
 
@@ -68,6 +68,31 @@ Low: ${unilow2.gafe}
 Average: ${uniavg2.gafe}
 Fast: ${unifast2.gafe}
 
-Powered by <a href=\"https://etherscan.io/gasTracker\">EtherScan</a>"""
+Powered by <a href=\"https://etherscan.io\">EtherScan</a>"""
 
     return uniswapgas
+
+def erc20():
+    data = requests.get(getgas).json()
+
+    low = int(data["result"]["SafeGasPrice"])
+    avg = int(data["result"]["ProposeGasPrice"])
+    fast = int(data["result"]["FastGasPrice"])
+    usdp = forgwei()
+
+    class erc20fee:
+        def __init__(self, fees):
+            self.fees = str(round(fees * 65000 * usdp * gweitoeth, 3))
+
+    erclow = erc20fee(low)
+    ercavg = erc20fee(avg)
+    ercfast = erc20fee(fast)
+
+    ERC20Fees = f"""<b><ins>ERC-20 Token Transfer Fees:</ins></b>
+Low: ${erclow.fees}
+Average: ${ercavg.fees}
+Fast: ${ercfast.fees}
+
+Powered by <a href=\"https://etherscan.io\">EtherScan</a>"""
+
+    return ERC20Fees
