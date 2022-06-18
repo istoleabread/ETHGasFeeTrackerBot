@@ -12,4 +12,4 @@
   - Etherscan API - [Website](https://etherscan.io/apis) | [API Documentation](https://docs.etherscan.io/)
 
 ## APIs
-  - Powered by [EtherScan](https://etherscan.io/gasTracker) & [Coingecko](https://coingecko.com) API
+  - Powered by [EtherScan](https://etherscan.io/) & [Coingecko](https://coingecko.com) API
