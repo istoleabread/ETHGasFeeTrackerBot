@@ -37,6 +37,7 @@ Thanks a ton!
 cmds = """<b><ins>All Commands:</ins></b>
 /gas - See live gas fee
 /uni - Check live Uniswap V3 & V2 gas fees
+/erc20 - Check live ERC-20 Token's transfer fees
 /p - Get Ethereum Live Price
 /donate - Donate to support development of this bot
 /contact - Contact my Dev regarding anything
