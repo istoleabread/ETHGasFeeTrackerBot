@@ -12,17 +12,21 @@ def getdetails():
 
 schedule.every(30).seconds.do(getdetails)
 
+
 def forever():
     while True:
         schedule.run_pending()
         sleep(1)
 
+	
 def forgwei():
     pusd = round(data['ethereum']['usd'],2)
     return pusd
 
+
 t1 = Thread(target = forever)
 t1.start()
+
 
 def getprice():
     pusd = round(data['ethereum']['usd'],2)
