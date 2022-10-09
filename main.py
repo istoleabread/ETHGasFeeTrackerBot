@@ -1,14 +1,15 @@
 import telebot, os
 from telebot.types import InlineKeyboardMarkup as ikm
 from telebot.types import InlineKeyboardButton as ikb
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from time import sleep
-from gasfees import gasfee, uniswap, erc20
+from gasfees import gasfee, uniswap, erc20, ens
 from alive import keep_alive
 from ethprice import getprice
 
-keep_alive() #This function is used to keep the bot alive on replit server
+keep_alive() #This function is used to keep the bot alive on Replit's server
 
-Token = os.environ["token"] #This is bot's API Token
+Token = os.environ["token"] #Bot's API Token
 
 bot = telebot.TeleBot(Token, parse_mode="HTML")
 
@@ -21,24 +22,24 @@ knwn = knwn.split()
 
 wlcm = """Ciao! I'm ETH Gas Fee Tracker Bot, I can send you live Ethereum Gas Fees in GWEI & USD.
 
-Send /gas to see!
 All Commands - /cmds
 
 Donate to support the development of this bot: /donate
 """
 
 donate = """Donate to support the development of this bot:
+<b>Donate via <a href="https://nowpayments.io/donation/advik">Crypto</a></b>
 <b>Blockchain Domain:</b> <a href="https://advik.click/ud">advik.wallet</a>
-<b>Donate with</b> <a href="https://advik.click/nano-donate">Nano</a>
 
 Thanks a ton!
 """
 
 cmds = """<b><ins>All Commands:</ins></b>
-/gas - See live gas fee
+/gas - Check live Ethereum gas fee
 /uni - Check live Uniswap V3 & V2 gas fees
 /erc20 - Check live ERC-20 Token's transfer fees
-/p - Get Ethereum Live Price
+/ens - Check live ENS Domain Registration Fees
+/p - Get Ethereum Live Price
 /donate - Donate to support development of this bot
 /contact - Contact my Dev regarding anything
 
@@ -46,12 +47,12 @@ cmds = """<b><ins>All Commands:</ins></b>
 """
 
 
-@bot.message_handler(commands=["start", "home"])
+@bot.message_handler(commands=["start"])
 def wlcmsg(msg):
     chatid = str(msg.chat.id)
     mrkp = ikm()
     mrkp.add(ikb("Join Channel For Updates", url="https://t.me/DevUpdate"))
-    if chatid not in knwn: #This is used to determine new users using the bot
+    if chatid not in knwn:
         knwn.append(chatid)
         with open('userids.txt', 'w') as uids:
             for uid in knwn:
@@ -82,6 +83,17 @@ def unigas(msg):
                 uid = uid + ' '
                 uids.write(uid)
 
+@bot.message_handler(commands=['ens'])
+def ensreg(msg):
+    bot.send_message(msg.chat.id, ens(), disable_web_page_preview=True)
+    chatid = str(msg.chat.id)
+    if chatid not in knwn:
+        knwn.append(chatid)
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
+
 @bot.message_handler(commands=['erc', 'erc20'])
 def ercfees(msg):
     bot.send_message(msg.chat.id, erc20(), disable_web_page_preview=True)
@@ -100,21 +112,15 @@ def donateme(msg):
 		
 @bot.message_handler(commands=["contact"])
 def pingme(msg):
-	mrkp = ikm() #Created InlineKeyboardMarkup
-	mrkp.add(ikb("Telegram", url="https://t.me/ETHGasFeeSupportBot"), ikb("Email", url="https://advik.click/ETHBot/")) #Added URLs to markup
+	mrkp = ikm()
+	mrkp.add(ikb("Telegram", url="https://t.me/ETHGasFeeSupportBot"), ikb("Email", url="https://advik.click/ETHBot/"))
 	mrkp.add(ikb("Join Channel For Updates", url="https://t.me/DevUpdate"))
 	bot.send_message(msg.chat.id, "Ping me if you've any query or want some new features:", reply_markup=mrkp)
 
-		
-@bot.message_handler(commands=["cmd", "cmds"])
-def cmd(msg):
-	bot.send_message(msg.chat.id, cmds, disable_web_page_preview=True)
-
-   
-#Hehe
+    
 @bot.message_handler(commands=["dev"])
 def iownit(msg):
-    bot.reply_to(msg, "Made by @DevAdvik")
+    bot.reply_to(msg, "Made by @istoleabread")
 
 
 @bot.message_handler(commands=["p"])
@@ -123,22 +129,18 @@ def usdbtc(msg):
     	bot.send_message(msg.chat.id, getprice(), disable_web_page_preview=True)
 
 
-#Function to get list of all user IDs, can only be used by me
 @bot.message_handler(commands=["uid", "uids"])
 def getuid(msg):
-    if msg.chat.id == my_user_id:
+    if msg.chat.id == 1060264505:
         users = open("userids.txt", "rb")
-        bot.send_document(my_user_id, users)
+        bot.send_document(1060264505, users)
         users.close()
     else:
         bot.send_message(msg.chat.id, "Error, You're an unauthorized user!")
 
-	
-#Not for common users, this function is used to send mesages to users using the bot, like announcement messages, etc.
-#Can only be used by the given user id, in this case, by me
 @bot.message_handler(commands=['send'])
 def sendnotif(msg):
-    if msg.chat.id == my_user_id:
+    if msg.chat.id == 1060264505:
         confirm = bot.send_message(msg.chat.id, "Send the message you'd like to be notified:")
         bot.register_next_step_handler(confirm, msgpreview)
     else:
@@ -162,34 +164,67 @@ def sendit(msg):
                     allusers+=1
                 except:
                     sleep(0.04)
-        bot.send_message(my_user_id, f"Message has been sent to {allusers} users!")
+        bot.send_message(1060264505, f"Message has been sent to {allusers} users!")
     except:
-        bot.send_message(my_user_id, "Message sending cancelled!")
+        bot.send_message(1060264505, "Message sending cancelled!")
 
-	
-#Function to check the number of active users using the bot, is kinda buggy, but works the second time:/
-#This too can only be used by given user id, i.e., by me
 @bot.message_handler(commands=["active"])
 def countactive(msg):
     actv=0
-    if msg.chat.id == my_user_id:
+    if msg.chat.id == 1060264505:
         for uid in knwn:
             try:
                 userid = int(uid)
                 bot.send_chat_action(userid, "typing")
                 sleep(0.04)
                 actv+=1
-                iopo = actv #For some fcking reason, if I don't include this line, the function breaks
+                iopo= actv
             except:
                 knwn.remove(uid)
                 sleep(0.04)
-        bot.send_message(my_user_id, f"No. of active users: {iopo}")
+        bot.send_message(1060264505, f"No. of active users: {iopo}")
         with open('userids.txt', 'w') as uids:
             for uid in knwn:
                 uid = uid + ' '
                 uids.write(uid)
     else:
         bot.reply_to(msg, "Unauthorised User: You don't have access to this command!")
+
+
+@bot.message_handler(commands=["cmd", "cmds"])
+def cmd(msg):
+    if str(msg.chat.id).startswith('-'):
+        bot.send_message(msg.chat.id, cmds, disable_web_page_preview=True)
+    else:
+        mrkp = ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
+        gasfee = KeyboardButton("ETH Gas Fees")
+        uniswap = KeyboardButton("Uniswap Fees")
+        ensregistrar = KeyboardButton("ENS Fees")
+        erc = KeyboardButton("ERC-20 Token Transfer Fees")
+        price = KeyboardButton("Current Ethereum Price")
+        mrkp.add(gasfee, uniswap, ensregistrar, erc, price)
+        bot.send_message(msg.chat.id, cmds, disable_web_page_preview=True, reply_markup=mrkp)
+
+
+@bot.message_handler(func=lambda message:True)
+def forreply(message):
+    chatid = str(message.chat.id)
+    if chatid not in knwn:
+        knwn.append(chatid)
+        with open('userids.txt', 'w') as uids:
+            for uid in knwn:
+                uid = uid + ' '
+                uids.write(uid)
+    if message.text == "ETH Gas Fees":
+        bot.send_message(message.chat.id, gasfee(), disable_web_page_preview=True)
+    elif message.text == "Uniswap Fees":
+        bot.send_message(message.chat.id, uniswap(), disable_web_page_preview=True)
+    elif message.text == "ENS Fees":
+        bot.send_message(message.chat.id, ens(), disable_web_page_preview=True)
+    elif message.text == "Current Ethereum Price":
+        bot.send_message(message.chat.id, getprice(), disable_web_page_preview=True)
+    elif message.text == "ERC-20 Token Transfer Fees":
+        bot.send_message(message.chat.id, erc20(), disable_web_page_preview=True)
 
 
 while True:
