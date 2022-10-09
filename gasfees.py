@@ -1,7 +1,7 @@
 import requests, os
 from ethprice import forgwei
 
-API = os.environ['ether'] #The etherscan.io API Key
+API = os.environ['ether']
 getgas = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey="+API
 gweitoeth = 0.000000001
 
@@ -43,11 +43,11 @@ def uniswap():
 
     class uniusd:
       def __init__(self, usd):
-        self.usd = str(round(usd * 184523 * usdp * gweitoeth, 3)) #184523 is the gas limit of Uniswap V3
+        self.usd = str(round(usd * 184523 * usdp * gweitoeth, 3))
 
     class univ2:
-        def __init__(self, usdv2):
-            self.usdv2 = str(round(usdv2 * 152809 * usdp * gweitoeth, 3)) #152809 is the gas limit of Uniswap V2
+        def __init__(self, gafe):
+            self.gafe = str(round(gafe * 152809 * usdp * gweitoeth, 3))
 
     unilow = uniusd(low)
     uniavg = uniusd(avg)
@@ -71,6 +71,7 @@ Fast: ${unifast2.gafe}
 Powered by <a href=\"https://etherscan.io\">EtherScan</a>"""
 
     return uniswapgas
+
 
 def erc20():
     data = requests.get(getgas).json()
@@ -96,3 +97,28 @@ Fast: ${ercfast.fees}
 Powered by <a href=\"https://etherscan.io\">EtherScan</a>"""
 
     return ERC20Fees
+
+def ens():
+    data = requests.get(getgas).json()
+
+    low = int(data["result"]["SafeGasPrice"])
+    avg = int(data["result"]["ProposeGasPrice"])
+    fast = int(data["result"]["FastGasPrice"])
+    usdp = forgwei()
+
+    class gasfee:
+        def __init__(self, fees):
+            self.fees = str(round(fees * 266996 * usdp * gweitoeth, 3))
+
+    low = gasfee(low)
+    avg = gasfee(avg)
+    fast = gasfee(fast)
+
+    ens_registration_fees = f"""<b><ins>ENS: Domain Registration Fees</ins></b>
+Low: ${low.fees}
+Average: ${avg.fees}
+Fast: ${fast.fees}
+
+Powered by <a href=\"https://etherscan.io\">Etherscan</a>"""
+
+    return ens_registration_fees
