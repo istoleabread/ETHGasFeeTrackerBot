@@ -2,7 +2,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/devadvik/ethgasfeetrackerbot/badge)](https://www.codefactor.io/repository/github/devadvik/ethgasfeetrackerbot)
 
 # ETHGasFeeTrackerBot
-[Telegram Bot](https://telegram.dog/ETHGasFeeTrackerBot) to show Live Ethereum Gas Fees in GWEI & USD, used by over 1400 users and groups! Features:
+[Telegram Bot](https://telegram.dog/ETHGasFeeTrackerBot) to show Live Ethereum Gas Fees in GWEI & USD, used by over 1700 users and groups! Features:
   - Live Ethereum Transaction Fees
   - Live Transaction Fees from Uniswap (V2 & V3), ENS (Ethereum Name Service), ERC-20 Token Transfer
   - Get Price and Market Data of Ethereum
