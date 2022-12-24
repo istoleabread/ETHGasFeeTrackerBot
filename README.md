@@ -7,7 +7,7 @@
   - Live Transaction Fees from Uniswap (V2 & V3), ENS (Ethereum Name Service), ERC-20 Token Transfer
   - Get Price and Market Data of Ethereum
   
- Join [@DevUpdate](https://t.me/DevUpdate) on Telegram for all updates regarding the bot!
+ Join [@DevUpdate](https://t.me/s/DevUpdate) on Telegram for all updates regarding the bot!
 
 ## Requirements to run locally:
   - pyTelegramBotAPI - [GitHub](https://github.com/eternnoir/pyTelegramBotAPI)
