@@ -7,9 +7,9 @@ from gasfees import gasfee, uniswap, erc20, ens
 from alive import keep_alive
 from ethprice import getprice
 
-keep_alive() #This function is used to keep the bot alive on Replit's server
+keep_alive()
 
-Token = os.environ["token"] #Bot's API Token
+Token = os.environ["token"]
 
 bot = telebot.TeleBot(Token, parse_mode="HTML")
 
@@ -28,7 +28,7 @@ Donate to support the development of this bot: /donate
 """
 
 donate = """Donate to support the development of this bot:
-<b>Donate via <a href="https://nowpayments.io/donation/advik">Crypto</a></b>
+<b>Donate via /crypto</b>
 <b>Blockchain Domain:</b> <a href="https://advik.click/ud">advik.wallet</a>
 
 Thanks a ton!
@@ -108,6 +108,22 @@ def ercfees(msg):
 @bot.message_handler(commands=["donate"])
 def donateme(msg):
 	bot.send_message(msg.chat.id, donate, disable_web_page_preview=True)
+
+@bot.message_handler(commands=['crypto'])
+def cryptoaddr(msg):
+    addresses = """<b><ins>Crypto Addresses:</ins></b>
+<b>BTC:</b> <code>bc1q6f0gvamlxpq0qxze4qkj83vpf0f764eefcu7dq</code>
+
+<b>ETH/MATIC/BSC:</b> <code>0xa28cab9dfb91078d3e2508f322c4f816c7c851c4</code>
+
+<b>DOGE:</b> <code>DQB9XgyGR5Dv9AVWHF1iJF8ewBMTGxvcEq</code>
+
+<b>APTOS:</b> <code>0x37b8f66f8f551fa1a036d05fe39f8f852aeaa231cdd712d3c9eb94382713ec06</code>
+
+<b>MONERO:</b> <code>42wtBJDKg1bJSqpfFgXnzM2gJeB19Ztzj7UmYrAHJfKu4BZVgMsXwKvBw9TyGPwHN8AcqAByXpRSz73TfJeytLhMTku2fTk</code>
+
+<b>OTHER:</b> @istoleabread"""
+    bot.send_message(msg.chat.id, addresses)
 
 		
 @bot.message_handler(commands=["contact"])
